@@ -1,15 +1,21 @@
 {
   "name": "rest-api-starter",
   "type": "module",
+  "packageManager": "pnpm@9.15.3",
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "lint": "eslint .",
+    "lint:fix": "pnpm lint --fix"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
     "hono": "^4.6.19"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^4.1.0",
     "@types/node": "^20.11.17",
+    "eslint": "^9.19.0",
+    "eslint-plugin-format": "^1.0.1",
     "tsx": "^4.7.1"
   }
 }
