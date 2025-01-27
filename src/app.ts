@@ -5,7 +5,8 @@ import { OpenAPIHono } from '@hono/zod-openapi'
 import { requestId } from 'hono/request-id'
 import { STATUS_CODES } from 'node:http'
 
-import { pinoLogger } from './middlewares/pino-logger'
+import { pinoLogger } from './middlewares/pino-logger.js'
+import serveEmojiFavicon from './middlewares/serve-emoji-favicon.js'
 
 interface AppBindings {
   Variables: {
@@ -16,6 +17,7 @@ interface AppBindings {
 const app = new OpenAPIHono<AppBindings>()
 
 app.use(requestId())
+app.use(serveEmojiFavicon('🌮'))
 app.use(pinoLogger())
 
 app.get('/', (c) => {
