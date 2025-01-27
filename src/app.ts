@@ -1,9 +1,22 @@
+import type { PinoLogger } from 'hono-pino'
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
 
 import { OpenAPIHono } from '@hono/zod-openapi'
+import { requestId } from 'hono/request-id'
 import { STATUS_CODES } from 'node:http'
 
-const app = new OpenAPIHono()
+import { pinoLogger } from './middlewares/pino-logger'
+
+interface AppBindings {
+  Variables: {
+    logger: PinoLogger
+  }
+}
+
+const app = new OpenAPIHono<AppBindings>()
+
+app.use(requestId())
+app.use(pinoLogger())
 
 app.get('/', (c) => {
   return c.text('Hello Hono!')
