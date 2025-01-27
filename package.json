@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
-    "hono": "^4.6.19"
+    "@hono/zod-openapi": "0.18.3",
+    "hono": "^4.6.19",
+    "zod": "3.24.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.1.0",
