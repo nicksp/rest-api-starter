@@ -1,9 +1,8 @@
-import type { ContentfulStatusCode } from 'hono/utils/http-status'
-
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { requestId } from 'hono/request-id'
-import { STATUS_CODES } from 'node:http'
 
+import notFound from '@/middlewares/not-found.js'
+import onError from '@/middlewares/on-error.js'
 import { pinoLogger } from '@/middlewares/pino-logger.js'
 import serveEmojiFavicon from '@/middlewares/serve-emoji-favicon.js'
 
@@ -20,28 +19,8 @@ export default function createApp() {
   app.use(serveEmojiFavicon('🌮'))
   app.use(pinoLogger())
 
-  app.notFound((c) => {
-    const statusCode = 404
-    return c.json({ message: `${STATUS_CODES[statusCode]} - ${c.req.path}` }, statusCode)
-  })
-
-  app.onError((err, c) => {
-    const currentStatus = 'status' in err
-      ? err.status
-      : c.newResponse(null).status
-    const statusCode = currentStatus !== 200
-      ? currentStatus as ContentfulStatusCode
-      : 500
-    // eslint-disable-next-line node/no-process-env
-    const env = c.env?.NODE_ENV ?? process.env?.NODE_ENV
-
-    return c.json({
-      message: err.message,
-      stack: env === 'production'
-        ? undefined
-        : err.stack,
-    }, statusCode)
-  })
+  app.notFound(notFound)
+  app.onError(onError)
 
   return app
 }
