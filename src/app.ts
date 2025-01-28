@@ -5,11 +5,11 @@ import configureOpenAPI from './lib/configure-open-api.js'
 
 const app = createApp()
 
+configureOpenAPI(app)
+
 const routes = [
   index,
 ]
-
-configureOpenAPI(app)
 
 routes.forEach((route) => {
   app.route('/', route)

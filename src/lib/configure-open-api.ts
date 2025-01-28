@@ -4,10 +4,10 @@ import type { AppOpenAPI } from './types.js'
 
 import packageJSON from '../../package.json' assert { type: 'json' }
 
-const openAPIPath = '/doc'
+const openAPIDocPath = '/doc'
 
 export default function configureOpenAPI(app: AppOpenAPI) {
-  app.doc(openAPIPath, {
+  app.doc(openAPIDocPath, {
     openapi: '3.0.0',
     info: {
       version: packageJSON.version,
@@ -15,16 +15,19 @@ export default function configureOpenAPI(app: AppOpenAPI) {
     },
   })
 
-  app.get('/reference', apiReference({
-    theme: 'kepler',
-    layout: 'classic',
-    defaultHttpClient: {
-      targetKey: 'javascript',
-      clientKey: 'fetch',
-    },
-    pageTitle: 'REST API Reference',
-    spec: {
-      url: openAPIPath,
-    },
-  }))
+  app.get(
+    '/reference',
+    apiReference({
+      theme: 'kepler',
+      layout: 'classic',
+      defaultHttpClient: {
+        targetKey: 'javascript',
+        clientKey: 'fetch',
+      },
+      pageTitle: 'REST API Reference',
+      spec: {
+        url: openAPIDocPath,
+      },
+    }),
+  )
 }
