@@ -6,6 +6,7 @@ import jsonContent from '@/utils/openapi/json-content.js'
 
 const router = createRouter()
   .openapi(createRoute({
+    tags: ['Index'],
     method: 'get',
     path: '/',
     responses: {
