@@ -1,5 +1,5 @@
 import { boolean, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
-import { createSelectSchema } from 'drizzle-zod'
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 
 export const tasks = pgTable('tasks', {
   id: uuid('id')
@@ -18,4 +18,17 @@ export const tasks = pgTable('tasks', {
     .$onUpdate(() => new Date())
     .notNull(),
 })
+
 export const taskSelectSchema = createSelectSchema(tasks)
+export const taskInsertSchema = createInsertSchema(
+  tasks,
+  {
+    name: schema => schema.min(1).max(255),
+  },
+).required({
+  done: true,
+}).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+})
