@@ -34,6 +34,7 @@ export const taskInsertSchema = createInsertSchema(
   createdAt: true,
   updatedAt: true,
 })
+export const taskPatchSchema = taskInsertSchema.partial()
 
 export const IdParamsSchema = z.object({
   id: z.string().uuid().openapi({

@@ -17,6 +17,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@asteasolutions/zod-to-openapi": "7.3.0",
     "@hono/node-server": "^1.13.7",
     "@hono/zod-openapi": "0.18.3",
     "@scalar/hono-api-reference": "0.5.169",
