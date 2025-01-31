@@ -1,9 +1,11 @@
+import { STATUS_CODES } from 'node:http'
+
 import type { AppRouteHandler } from '@/lib/types.js'
 
 import { db } from '@/db/index.js'
 import { tasks } from '@/db/schema/tasks.js'
 
-import type { CreateRoute, ListRoute } from './tasks.routes.js'
+import type { CreateRoute, GetOneRoute, ListRoute } from './tasks.routes.js'
 
 export const list: AppRouteHandler<ListRoute> = async (c) => {
   const tasks = await db.query.tasks.findMany()
@@ -14,4 +16,21 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
   const taskPayload = c.req.valid('json')
   const [insertedTask] = await db.insert(tasks).values(taskPayload).returning()
   return c.json(insertedTask, 200)
+}
+
+export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
+  const { id } = c.req.valid('param')
+
+  const task = await db.query.tasks.findFirst({
+    where(fields, operators) {
+      return operators.eq(fields.id, id)
+    },
+  })
+
+  if (!task) {
+    const statusCode = 404
+    return c.json({ message: STATUS_CODES[statusCode]! }, statusCode)
+  }
+
+  return c.json(task, 200)
 }
