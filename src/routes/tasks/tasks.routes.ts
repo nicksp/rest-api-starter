@@ -12,10 +12,12 @@ export const list = createRoute({
   path: '/tasks',
   method: 'get',
   tags,
+  summary: 'Fetch a list of tasks',
+  description: 'Retrieves available user tasks.',
   responses: {
     200: jsonContent(
       z.array(taskSelectSchema),
-      'The list of tasks',
+      'A list of all tasks successfully retrieved',
     ),
   },
 })
@@ -24,16 +26,18 @@ export const create = createRoute({
   path: '/tasks',
   method: 'post',
   request: {
+    summary: 'Create a new task',
+    description: 'Creates a new task with the provided details.',
     body: jsonContentRequired(
       taskInsertSchema,
-      'Payload to create a new task',
+      'Task',
     ),
   },
   tags,
   responses: {
     200: jsonContent(
       taskSelectSchema,
-      'The created task',
+      'Task created successfully',
     ),
     422: jsonContent(
       createErrorSchema(taskInsertSchema),

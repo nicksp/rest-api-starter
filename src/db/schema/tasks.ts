@@ -1,3 +1,4 @@
+import { z } from '@hono/zod-openapi'
 import { boolean, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 
@@ -23,7 +24,8 @@ export const taskSelectSchema = createSelectSchema(tasks)
 export const taskInsertSchema = createInsertSchema(
   tasks,
   {
-    name: schema => schema.min(1).max(255),
+    name: schema => schema.min(1).max(255).describe('The name of the task.'),
+    done: schema => schema.describe('Whether the task is completed.').default(false),
   },
 ).required({
   done: true,
