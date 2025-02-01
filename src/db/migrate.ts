@@ -6,7 +6,12 @@ import dbConfig from '@/../drizzle.config.js'
 import { migrationClient } from './index.js'
 
 async function run() {
-  await migrate(drizzle(migrationClient), { migrationsFolder: dbConfig.out! })
+  await migrate(drizzle({
+    client: migrationClient,
+    casing: 'snake_case',
+  }), {
+    migrationsFolder: dbConfig.out!,
+  })
 
   // Don't forget to close the connection, otherwise the script will hang
   await migrationClient.end()

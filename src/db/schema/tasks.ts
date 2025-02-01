@@ -2,18 +2,18 @@ import { boolean, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 
 export const tasks = pgTable('tasks', {
-  id: uuid('id')
+  id: uuid()
     .primaryKey()
     .defaultRandom(),
-  done: boolean('done')
+  done: boolean()
     .default(false)
     .notNull(),
-  name: varchar('name', { length: 255 })
+  name: varchar({ length: 255 })
     .notNull(),
-  createdAt: timestamp('created_at', { mode: 'date' })
+  createdAt: timestamp({ mode: 'date' })
     .defaultNow()
     .notNull(),
-  updatedAt: timestamp('updated_at', { mode: 'date' })
+  updatedAt: timestamp({ mode: 'date' })
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),

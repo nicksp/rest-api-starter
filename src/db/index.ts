@@ -8,4 +8,8 @@ import { schema } from './schema/index.js'
 export const migrationClient = postgres(env.DATABASE_URL, { max: 1 })
 export const queryClient = postgres(env.DATABASE_URL)
 
-export const db = drizzle({ client: queryClient, schema })
+export const db = drizzle({
+  client: queryClient,
+  casing: 'snake_case',
+  schema,
+})
