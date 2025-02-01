@@ -1,5 +1,3 @@
-import type { ZodError } from 'zod'
-
 import { config } from 'dotenv'
 import { expand } from 'dotenv-expand'
 import { z } from 'zod'
@@ -20,20 +18,15 @@ const EnvSchema = z.object({
 
 export type env = z.infer<typeof EnvSchema>
 
-// eslint-disable-next-line import/no-mutable-exports, ts/no-redeclare
-let env: env
+// eslint-disable-next-line node/no-process-env
+const parsedEnv = EnvSchema.safeParse(process.env)
 
-try {
-  // eslint-disable-next-line node/no-process-env
-  env = EnvSchema.parse(process.env)
-}
-catch (e) {
-  const error = e as ZodError
+if (!parsedEnv.success) {
   console.error(
     '❌ Invalid environment variables:',
-    error.flatten().fieldErrors,
+    JSON.stringify(parsedEnv.error.flatten().fieldErrors, null, 2),
   )
   process.exit(1)
 }
 
-export default env
+export default parsedEnv.data
