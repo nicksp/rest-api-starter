@@ -1,11 +1,12 @@
 import { createRoute, z } from '@hono/zod-openapi'
 
-import { IdParamsSchema, taskInsertSchema, taskPatchSchema, taskSelectSchema } from '@/db/schema/tasks.js'
-import { notFoundSchema } from '@/lib/constants.js'
+import { taskInsertSchema, taskPatchSchema, taskSelectSchema } from '@/db/schema/tasks.js'
 import createErrorSchema from '@/utils/openapi/create-error-schema.js'
+import createIdUUIDParamsSchema from '@/utils/openapi/create-id-uuid-params-schema.js'
 import jsonContentOneOf from '@/utils/openapi/json-content-one-of.js'
 import jsonContentRequired from '@/utils/openapi/json-content-required.js'
 import jsonContent from '@/utils/openapi/json-content.js'
+import notFoundSchema from '@/utils/openapi/not-found-schema.js'
 
 const tags = ['Tasks']
 
@@ -54,7 +55,7 @@ export const getOne = createRoute({
   summary: 'Get a task by ID',
   description: 'Retrieves a single task record by its unique identifier.',
   request: {
-    params: IdParamsSchema,
+    params: createIdUUIDParamsSchema('The unique identifier of the task to retrieve.'),
   },
   responses: {
     200: jsonContent(
@@ -66,7 +67,7 @@ export const getOne = createRoute({
       'Task not found',
     ),
     422: jsonContent(
-      createErrorSchema(IdParamsSchema),
+      createErrorSchema(createIdUUIDParamsSchema('The unique identifier of the task to retrieve.')),
       'Invalid ID error',
     ),
   },
@@ -79,7 +80,7 @@ export const patch = createRoute({
   summary: 'Update task details',
   description: 'Updates specified details of an existing task.',
   request: {
-    params: IdParamsSchema,
+    params: createIdUUIDParamsSchema('The unique identifier of the task to update.'),
     body: jsonContentRequired(
       taskPatchSchema,
       'The task updates',
@@ -96,7 +97,7 @@ export const patch = createRoute({
     ),
     422: jsonContentOneOf(
       [
-        createErrorSchema(IdParamsSchema),
+        createErrorSchema(createIdUUIDParamsSchema('The unique identifier of the task to update.')),
         createErrorSchema(taskPatchSchema),
       ],
       'The validation error(s)',
@@ -111,7 +112,7 @@ export const remove = createRoute({
   summary: 'Delete a task',
   description: 'Deletes a task by its unique identifier.',
   request: {
-    params: IdParamsSchema,
+    params: createIdUUIDParamsSchema('The unique identifier of the task to delete.'),
   },
   responses: {
     204: {
@@ -122,7 +123,7 @@ export const remove = createRoute({
       'Task not found',
     ),
     422: jsonContent(
-      createErrorSchema(IdParamsSchema),
+      createErrorSchema(createIdUUIDParamsSchema('The unique identifier of the task to delete.')),
       'Invalid ID error',
     ),
   },

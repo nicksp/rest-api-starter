@@ -1,4 +1,3 @@
-import { z } from '@hono/zod-openapi'
 import { boolean, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 
@@ -35,19 +34,3 @@ export const taskInsertSchema = createInsertSchema(
   updatedAt: true,
 })
 export const taskPatchSchema = taskInsertSchema.partial()
-
-export const IdParamsSchema = z.object({
-  id: z.string().uuid().openapi({
-    param: {
-      name: 'id',
-      in: 'path',
-      required: true,
-      description: 'The unique identifier of the task to retrieve.',
-    },
-    examples: [
-      'b577253d-5438-49dd-993e-105b38bc9a8c',
-      '550e8400-e29b-41d4-a716-446655440000',
-      'non-valid-uuid',
-    ],
-  }),
-})
