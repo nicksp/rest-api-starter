@@ -6,7 +6,7 @@ import type { AppRouteHandler } from '@/lib/types.js'
 import { db } from '@/db/index.js'
 import { tasks } from '@/db/schema/tasks.js'
 
-import type { CreateRoute, GetOneRoute, ListRoute, PatchRoute } from './tasks.routes.js'
+import type { CreateRoute, GetOneRoute, ListRoute, PatchRoute, RemoveRoute } from './tasks.routes.js'
 
 export const list: AppRouteHandler<ListRoute> = async (c) => {
   const tasks = await db.query.tasks.findMany()
@@ -51,4 +51,19 @@ export const patch: AppRouteHandler<PatchRoute> = async (c) => {
   }
 
   return c.json(task, 200)
+}
+
+export const remove: AppRouteHandler<RemoveRoute> = async (c) => {
+  const { id } = c.req.valid('param')
+
+  const deletedResult = await db.delete(tasks)
+    .where(eq(tasks.id, id))
+    .returning()
+
+  if (deletedResult.length === 0) {
+    const statusCode = 404
+    return c.json({ message: STATUS_CODES[statusCode]! }, statusCode)
+  }
+
+  return c.body(null, 204)
 }
