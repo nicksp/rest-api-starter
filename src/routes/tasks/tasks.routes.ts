@@ -97,8 +97,8 @@ export const patch = createRoute({
     ),
     422: jsonContentOneOf(
       [
-        createErrorSchema(createIdUUIDParamsSchema('The unique identifier of the task to update.')),
         createErrorSchema(taskPatchSchema),
+        createErrorSchema(createIdUUIDParamsSchema('The unique identifier of the task to update.')),
       ],
       'The validation error(s)',
     ),

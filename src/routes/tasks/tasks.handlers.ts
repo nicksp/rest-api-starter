@@ -5,6 +5,7 @@ import type { AppRouteHandler } from '@/lib/types.js'
 
 import { db } from '@/db/index.js'
 import { tasks } from '@/db/schema/tasks.js'
+import { ZOD_ERROR_CODES, ZOD_ERROR_MESSAGES } from '@/lib/constants.js'
 
 import type { CreateRoute, GetOneRoute, ListRoute, PatchRoute, RemoveRoute } from './tasks.routes.js'
 
@@ -39,6 +40,25 @@ export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
 export const patch: AppRouteHandler<PatchRoute> = async (c) => {
   const { id } = c.req.valid('param')
   const updates = c.req.valid('json')
+
+  if (Object.keys(updates).length === 0) {
+    return c.json(
+      {
+        success: false,
+        error: {
+          issues: [
+            {
+              code: ZOD_ERROR_CODES.INVALID_UPDATE,
+              path: [],
+              message: ZOD_ERROR_MESSAGES.NO_UPDATE,
+            },
+          ],
+          name: 'ZodError',
+        },
+      },
+      422,
+    )
+  }
 
   const [task] = await db.update(tasks)
     .set(updates)

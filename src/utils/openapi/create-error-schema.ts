@@ -11,6 +11,7 @@ export default function createErrorSchema<
       ? []
       : {},
   )
+
   return z.object({
     success: z.boolean().openapi({
       example: false,
