@@ -18,4 +18,7 @@ export default antfu({
     case: 'kebabCase',
     ignore: ['README.md'],
   }],
+  'vitest/prefer-lowercase-title': ['error', {
+    ignore: ['describe'],
+  }],
 } })

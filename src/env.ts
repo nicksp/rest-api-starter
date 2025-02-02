@@ -1,13 +1,18 @@
 import { config } from 'dotenv'
 import { expand } from 'dotenv-expand'
+import path from 'node:path'
 import { z } from 'zod'
 
-expand(config())
+// eslint-disable-next-line node/no-process-env
+const envFile = process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
+expand(config({
+  path: path.resolve(process.cwd(), envFile),
+}))
 
 const EnvSchema = z.object({
   NODE_ENV: z.string().default('development'),
   PORT: z.coerce.number().default(4000),
-  LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']),
+  LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']),
   DB_HOST: z.string(),
   DB_USER: z.string(),
   DB_PASSWORD: z.string(),
