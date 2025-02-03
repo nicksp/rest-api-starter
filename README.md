@@ -1,8 +1,15 @@
+TBD
+
 ```
-npm install
-npm run dev
+pnpm install
+
+# 1st terminal
+pnpm dev:docker
+
+# 2nd terminal
+pnpm dev
 ```
 
 ```
-open http://localhost:3000
+open http://localhost:4000
 ```
