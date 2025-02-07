@@ -5,8 +5,11 @@
   "packageManager": "pnpm@9.15.3",
   "scripts": {
     "dev": "tsx watch src/index.ts",
+    "build": "tsc && tsc-alias",
+    "start": "node ./dist/src/index.js",
     "lint": "eslint .",
     "lint:fix": "pnpm lint --fix",
+    "typecheck": "tsc --noEmit",
     "db:push": "NODE_OPTIONS=\"--import tsx\" drizzle-kit push",
     "db:generate": "NODE_OPTIONS=\"--import tsx\" drizzle-kit generate",
     "db:studio": "NODE_OPTIONS=\"--import tsx\" drizzle-kit studio",
@@ -48,10 +51,12 @@
     "eslint-plugin-format": "^1.0.1",
     "husky": "9.1.7",
     "lint-staged": "15.4.3",
+    "tsc-alias": "1.8.10",
     "tsx": "^4.19.2",
+    "typescript": "5.7.3",
     "vitest": "3.0.5"
   },
   "lint-staged": {
-    "*.ts": "pnpm lint:fix --max-warnings=0"
+    "*.ts": "pnpm lint:fix --max-warnings=0 && pnpm typecheck"
   }
 }

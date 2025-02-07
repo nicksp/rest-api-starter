@@ -12,8 +12,13 @@
       "node"
     ],
     "strict": true,
+    "outDir": "./dist",
     "verbatimModuleSyntax": true,
     "noErrorTruncation": true,
     "skipLibCheck": true
+  },
+  "exclude": ["node_modules"],
+  "tsc-alias": {
+    "resolveFullPaths": true
   }
 }
