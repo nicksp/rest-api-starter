@@ -4,7 +4,7 @@ import env from '@/env.js'
 
 import type { AppOpenAPI } from '../types.js'
 
-import packageJSON from '../../../package.json' assert { type: 'json' }
+import packageJSON from '../../../package.json' with { type: 'json' }
 
 const openAPIDocPath = '/doc'
 
