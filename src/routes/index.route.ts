@@ -1,8 +1,8 @@
 import { createRoute } from '@hono/zod-openapi'
 
 import { createRouter } from '@/lib/create-app.js'
-import createMessageObjectSchema from '@/utils/openapi/create-message-object-schema.js'
-import jsonContent from '@/utils/openapi/json-content.js'
+import jsonContent from '@/lib/openapi/helpers/json-content.js'
+import createMessageObjectSchema from '@/lib/openapi/schema/create-message-object-schema.js'
 
 const router = createRouter()
   .openapi(createRoute({

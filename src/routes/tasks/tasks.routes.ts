@@ -1,11 +1,11 @@
 import { createRoute, z } from '@hono/zod-openapi'
 
 import { taskInsertSchema, taskPatchSchema, tasksSelectSchema } from '@/db/schema/tasks.js'
-import createErrorSchema from '@/utils/openapi/create-error-schema.js'
-import createIdUUIDParamsSchema from '@/utils/openapi/create-id-uuid-params-schema.js'
-import jsonContentRequired from '@/utils/openapi/json-content-required.js'
-import jsonContent from '@/utils/openapi/json-content.js'
-import notFoundSchema from '@/utils/openapi/not-found-schema.js'
+import jsonContentRequired from '@/lib/openapi/helpers/json-content-required.js'
+import jsonContent from '@/lib/openapi/helpers/json-content.js'
+import createErrorSchema from '@/lib/openapi/schema/create-error-schema.js'
+import createIdUUIDParamsSchema from '@/lib/openapi/schema/create-id-uuid-params-schema.js'
+import createNotFoundObjectSchema from '@/lib/openapi/schema/create-not-found-object-schema.js'
 
 const tags = ['Tasks']
 
@@ -62,7 +62,7 @@ export const getOne = createRoute({
       'Task retrieved successfully',
     ),
     404: jsonContent(
-      notFoundSchema,
+      createNotFoundObjectSchema(),
       'Task not found',
     ),
     422: jsonContent(
@@ -91,7 +91,7 @@ export const patch = createRoute({
       'Task updated successfully',
     ),
     404: jsonContent(
-      notFoundSchema,
+      createNotFoundObjectSchema(),
       'Task not found',
     ),
     422: jsonContent(
@@ -116,7 +116,7 @@ export const remove = createRoute({
       description: 'Task deleted successfully',
     },
     404: jsonContent(
-      notFoundSchema,
+      createNotFoundObjectSchema(),
       'Task not found',
     ),
     422: jsonContent(

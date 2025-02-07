@@ -2,9 +2,9 @@ import { apiReference } from '@scalar/hono-api-reference'
 
 import env from '@/env.js'
 
-import type { AppOpenAPI } from './types.js'
+import type { AppOpenAPI } from '../types.js'
 
-import packageJSON from '../../package.json' assert { type: 'json' }
+import packageJSON from '../../../package.json' assert { type: 'json' }
 
 const openAPIDocPath = '/doc'
 
