@@ -13,6 +13,7 @@ export default antfu({
   'node/no-process-env': ['error'],
   'perfectionist/sort-imports': ['error', {
     tsconfigRootDir: '.',
+    internalPattern: ['^@/.*'],
   }],
   'unicorn/filename-case': ['error', {
     case: 'kebabCase',

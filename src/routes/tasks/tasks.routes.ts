@@ -1,9 +1,8 @@
 import { createRoute, z } from '@hono/zod-openapi'
 
-import { taskInsertSchema, taskPatchSchema, taskSelectSchema } from '@/db/schema/tasks.js'
+import { taskInsertSchema, taskPatchSchema, tasksSelectSchema } from '@/db/schema/tasks.js'
 import createErrorSchema from '@/utils/openapi/create-error-schema.js'
 import createIdUUIDParamsSchema from '@/utils/openapi/create-id-uuid-params-schema.js'
-import jsonContentOneOf from '@/utils/openapi/json-content-one-of.js'
 import jsonContentRequired from '@/utils/openapi/json-content-required.js'
 import jsonContent from '@/utils/openapi/json-content.js'
 import notFoundSchema from '@/utils/openapi/not-found-schema.js'
@@ -18,7 +17,7 @@ export const list = createRoute({
   description: 'Retrieves available user tasks.',
   responses: {
     200: jsonContent(
-      z.array(taskSelectSchema),
+      z.array(tasksSelectSchema),
       'A list of all tasks successfully retrieved',
     ),
   },
@@ -38,7 +37,7 @@ export const create = createRoute({
   },
   responses: {
     200: jsonContent(
-      taskSelectSchema,
+      tasksSelectSchema,
       'Task created successfully',
     ),
     422: jsonContent(
@@ -59,7 +58,7 @@ export const getOne = createRoute({
   },
   responses: {
     200: jsonContent(
-      taskSelectSchema,
+      tasksSelectSchema,
       'Task retrieved successfully',
     ),
     404: jsonContent(
@@ -88,18 +87,16 @@ export const patch = createRoute({
   },
   responses: {
     200: jsonContent(
-      taskSelectSchema,
+      tasksSelectSchema,
       'Task updated successfully',
     ),
     404: jsonContent(
       notFoundSchema,
       'Task not found',
     ),
-    422: jsonContentOneOf(
-      [
-        createErrorSchema(taskPatchSchema),
-        createErrorSchema(createIdUUIDParamsSchema('The unique identifier of the task to update.')),
-      ],
+    422: jsonContent(
+      createErrorSchema(createIdUUIDParamsSchema('The unique identifier of the task to update.'))
+        .or(createErrorSchema(taskPatchSchema)),
       'The validation error(s)',
     ),
   },
