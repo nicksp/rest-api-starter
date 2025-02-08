@@ -42,3 +42,10 @@ dist/
 
 # docker
 .docker
+
+# vercel
+.vercel
+
+# cloudflare
+.dev.vars
+.wrangler
