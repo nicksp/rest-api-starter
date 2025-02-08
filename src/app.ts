@@ -10,10 +10,13 @@ configureOpenAPI(app)
 const routes = [
   index,
   tasks,
-]
+] as const
 
 routes.forEach((route) => {
   app.route('/', route)
 })
+
+// To be used in RPC / hono/client
+export type AppType = typeof routes[number]
 
 export default app
