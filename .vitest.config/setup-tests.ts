@@ -1,7 +1,10 @@
 import { execSync } from 'node:child_process'
 import { afterAll, beforeAll } from 'vitest'
 
-import { db, sql } from '../src/db'
+import { createDb, sql } from '../src/db/index.js'
+import env from '../src/env-runtime.js'
+
+const { db } = createDb(env)
 
 beforeAll(async () => {
   execSync('pnpm db:push --force')

@@ -21,17 +21,15 @@ const EnvSchema = z.object({
   DATABASE_URL: z.string().url(),
 })
 
-export type env = z.infer<typeof EnvSchema>
+export type Environment = z.infer<typeof EnvSchema>
 
-// eslint-disable-next-line node/no-process-env
-const parsedEnv = EnvSchema.safeParse(process.env)
+export function parseEnv(data: any) {
+  const parsedEnv = EnvSchema.safeParse(data)
 
-if (!parsedEnv.success) {
-  console.error(
-    '❌ Invalid environment variables:',
-    JSON.stringify(parsedEnv.error.flatten().fieldErrors, null, 2),
-  )
-  process.exit(1)
+  if (parsedEnv.error) {
+    const errorMessage = `❌ Invalid environment variables: ${Object.entries(parsedEnv.error.flatten().fieldErrors).map(([key, errors]) => `${key}: ${errors.join(',')}`).join(' | ')}`
+    throw new Error(errorMessage)
+  }
+
+  return parsedEnv.data
 }
-
-export default parsedEnv.data

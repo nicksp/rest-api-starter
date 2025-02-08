@@ -1,10 +1,8 @@
 import { apiReference } from '@scalar/hono-api-reference'
 
-import env from '@/env.js'
-
 import type { AppOpenAPI } from '../types.js'
 
-import packageJSON from '../../../package.json' with { type: 'json' }
+import packageJSON from '../../../package.json' assert { type: 'json' }
 
 const openAPIDocPath = '/doc'
 
@@ -23,7 +21,7 @@ export default function configureOpenAPI(app: AppOpenAPI) {
     apiReference({
       theme: 'kepler',
       servers: [
-        { url: `http://localhost:${env.PORT}`, description: 'Local server' },
+        { url: '/', description: 'Local server' },
         { url: 'https://api.product.com/v1', description: 'Production server' },
       ],
       defaultHttpClient: {

@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hono-starter-cloudflare",
+  "main": "src/app.ts",
+  "compatibility_date": "2025-02-08",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "keep_vars": true,
+  "send_metrics": false
+}

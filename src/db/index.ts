@@ -1,17 +1,22 @@
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 
+import type { Environment } from '@/env.js'
+
 import { schema } from '@/db/schema/index.js'
-import env from '@/env.js'
 
-export const migrationClient = postgres(env.DATABASE_URL, { max: 1 })
+export function createDb(env: Environment) {
+  const migrationClient = postgres(env.DATABASE_URL, { max: 1 })
 
-export const queryClient = postgres(env.DATABASE_URL)
+  const queryClient = postgres(env.DATABASE_URL)
 
-export const db = drizzle({
-  client: queryClient,
-  casing: 'snake_case',
-  schema,
-})
+  const db = drizzle({
+    client: queryClient,
+    casing: 'snake_case',
+    schema,
+  })
+
+  return { migrationClient, queryClient, db }
+}
 
 export { sql } from 'drizzle-orm'

@@ -42,3 +42,7 @@ dist/
 
 # docker
 .docker
+
+# cloudflare
+.dev.vars
+.wrangler
